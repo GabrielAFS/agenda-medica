@@ -31,8 +31,11 @@ const string GET_USER_ENDPOINT = "GetUser";
 app.MapGet("/users", () => users);
 
 // GET /users/:id
-app.MapGet("/users/{id}", (int id) => users.Find(user => user.Id == id))
-    .WithName(GET_USER_ENDPOINT);
+app.MapGet("/users/{id}", (int id) => {
+    UserDTO? user = users.Find(user => user.Id == id);
+
+    return user is null ? Results.NotFound() : Results.Ok(user);
+}).WithName(GET_USER_ENDPOINT);
 
 // POST /users
 app.MapPost("/users", (CreateUserDTO newUser) => {
@@ -53,6 +56,8 @@ app.MapPost("/users", (CreateUserDTO newUser) => {
 // PUT /users/:id
 app.MapPut("/users/{id}", (int id, UpdateUserDTO updatedUser) => {
     var index = users.FindIndex(user => user.Id == id);
+
+    if (index == -1) return Results.NotFound();
 
     users[index] = new UserDTO(id, updatedUser.Name, updatedUser.Email, updatedUser.Password, updatedUser.Age, updatedUser.Photo);
 

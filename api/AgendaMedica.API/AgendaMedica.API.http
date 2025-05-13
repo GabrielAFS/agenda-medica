@@ -4,7 +4,7 @@ GET {{AgendaMedica.API_HostAddress}}/users/
 Accept: application/json
 
 ###
-GET {{AgendaMedica.API_HostAddress}}/users/1
+GET {{AgendaMedica.API_HostAddress}}/users/10
 Accept: application/json
 
 ###
@@ -20,7 +20,7 @@ Content-Type: application/json
 }
 
 ###
-PUT {{AgendaMedica.API_HostAddress}}/users/1
+PUT {{AgendaMedica.API_HostAddress}}/users/12
 Content-Type: application/json
 
 {
