@@ -1,6 +1,35 @@
 @AgendaMedica.API_HostAddress = http://localhost:5132
 
-GET {{AgendaMedica.API_HostAddress}}/weatherforecast/
+GET {{AgendaMedica.API_HostAddress}}/users/
 Accept: application/json
 
 ###
+GET {{AgendaMedica.API_HostAddress}}/users/1
+Accept: application/json
+
+###
+POST {{AgendaMedica.API_HostAddress}}/users
+Content-Type: application/json
+
+{
+  "name": "Fulana",
+  "email": "fulana@email.com",
+  "password": "12345678",
+  "age": 25,
+  "photo": "https://photos.com/myphoto.png"
+}
+
+###
+PUT {{AgendaMedica.API_HostAddress}}/users/1
+Content-Type: application/json
+
+{
+  "name": "Sicrano",
+  "email": "sicrano@email.com",
+  "password": "12345678",
+  "age": 19,
+  "photo": "https://photos.com/myphoto.png"
+}
+
+###
+DELETE {{AgendaMedica.API_HostAddress}}/users/1
