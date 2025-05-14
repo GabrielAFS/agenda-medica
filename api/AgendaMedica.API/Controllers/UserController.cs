@@ -15,7 +15,7 @@ public static class UserController
 
     public static RouteGroupBuilder MapUserEndpoints(this WebApplication app)
     {
-        var group = app.MapGroup("/users");
+        var group = app.MapGroup("/users").WithParameterValidation();
 
         // GET /users
         group.MapGet("/", () => users);
