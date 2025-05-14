@@ -4,7 +4,7 @@ GET {{AgendaMedica.API_HostAddress}}/users/
 Accept: application/json
 
 ###
-GET {{AgendaMedica.API_HostAddress}}/users/10
+GET {{AgendaMedica.API_HostAddress}}/users/1
 Accept: application/json
 
 ###
@@ -15,8 +15,8 @@ Content-Type: application/json
   "name": "Fulana",
   "email": "fulana@email.com",
   "password": "12345678",
-  "age": 25,
-  "photo": "https://photos.com/myphoto.png"
+  "photo": "https://photos.com/myphoto.png",
+  "birthDate": "1990-01-01"
 }
 
 ###
@@ -27,7 +27,7 @@ Content-Type: application/json
   "name": "Sicrano",
   "email": "sicrano@email.com",
   "password": "12345678",
-  "age": 19,
+  "birthDate": "1990-01-01",
   "photo": "https://photos.com/myphoto.png"
 }
 
