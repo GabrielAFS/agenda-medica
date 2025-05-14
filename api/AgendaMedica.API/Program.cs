@@ -27,4 +27,6 @@ app.UseHttpsRedirection();
 
 app.MapUserEndpoints();
 
+app.MigrateDatabase();
+
 app.Run();
