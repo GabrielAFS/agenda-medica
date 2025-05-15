@@ -1,14 +1,14 @@
-@AgendaMedica.API_HostAddress = http://localhost:5132
+@AgendaMedicaAPI_HostAddress = http://localhost:5132
 
-GET {{AgendaMedica.API_HostAddress}}/users/
+GET {{AgendaMedicaAPI_HostAddress}}/users/
 Accept: application/json
 
 ###
-GET {{AgendaMedica.API_HostAddress}}/users/1
+GET {{AgendaMedicaAPI_HostAddress}}/users/1
 Accept: application/json
 
 ###
-POST {{AgendaMedica.API_HostAddress}}/users
+POST {{AgendaMedicaAPI_HostAddress}}/users
 Content-Type: application/json
 
 {
@@ -20,7 +20,7 @@ Content-Type: application/json
 }
 
 ###
-PUT {{AgendaMedica.API_HostAddress}}/users/12
+PUT {{AgendaMedicaAPI_HostAddress}}/users/12
 Content-Type: application/json
 
 {
@@ -32,4 +32,4 @@ Content-Type: application/json
 }
 
 ###
-DELETE {{AgendaMedica.API_HostAddress}}/users/1
+DELETE {{AgendaMedicaAPI_HostAddress}}/users/1
