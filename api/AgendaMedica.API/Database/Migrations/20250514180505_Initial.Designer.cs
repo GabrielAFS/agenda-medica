@@ -11,7 +11,7 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
 namespace AgendaMedica.API.Database.Migrations
 {
-    [DbContext(typeof(ApiContext))]
+    [DbContext(typeof(DatabaseContext))]
     [Migration("20250514180505_Initial")]
     partial class Initial
     {

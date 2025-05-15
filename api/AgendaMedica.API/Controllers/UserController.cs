@@ -15,13 +15,13 @@ public static class UserController
         var group = app.MapGroup("/users").WithParameterValidation();
 
         // GET /users
-        group.MapGet("/", (ApiContext dbContext) => dbContext.Users
+        group.MapGet("/", (DatabaseContext dbContext) => dbContext.Users
             .Select(user => user.ToDTO())
             .AsNoTracking()
         );
 
         // GET /users/:id
-        group.MapGet("/{id}", (int id, ApiContext dbContext) =>
+        group.MapGet("/{id}", (int id, DatabaseContext dbContext) =>
         {
             User? user = dbContext.Users.Find(id);
 
@@ -29,7 +29,7 @@ public static class UserController
         }).WithName(GET_USER_ENDPOINT);
 
         // POST /users
-        group.MapPost("/", (CreateUserDTO newUser, ApiContext dbContext) =>
+        group.MapPost("/", (CreateUserDTO newUser, DatabaseContext dbContext) =>
         {
             User user = newUser.ToEntity();
 
@@ -44,7 +44,7 @@ public static class UserController
         });
 
         // PUT /users/:id
-        group.MapPut("/{id}", (int id, UpdateUserDTO updatedUser, ApiContext dbContext) =>
+        group.MapPut("/{id}", (int id, UpdateUserDTO updatedUser, DatabaseContext dbContext) =>
         {
             var user = dbContext.Users.Find(id);
             if (user is null) return Results.NotFound();
@@ -56,7 +56,7 @@ public static class UserController
         });
 
         // DELETE /users/:id
-        group.MapDelete("/{id}", (int id, ApiContext dbContext) =>
+        group.MapDelete("/{id}", (int id, DatabaseContext dbContext) =>
         {
             dbContext.Users.Where(user => user.Id == id).ExecuteDelete();
 

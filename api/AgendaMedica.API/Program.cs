@@ -6,7 +6,7 @@ var builder = WebApplication.CreateBuilder(args);
 
 var connectionString = builder.Configuration.GetConnectionString("DefaultConnection");
 
-builder.Services.AddDbContextPool<ApiContext>(options =>
+builder.Services.AddDbContextPool<DatabaseContext>(options =>
     options.UseNpgsql(connectionString));
 
 // Add services to the container.

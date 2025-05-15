@@ -10,7 +10,7 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
 namespace AgendaMedica.API.Database.Migrations
 {
-    [DbContext(typeof(ApiContext))]
+    [DbContext(typeof(DatabaseContext))]
     partial class ApiContextModelSnapshot : ModelSnapshot
     {
         protected override void BuildModel(ModelBuilder modelBuilder)

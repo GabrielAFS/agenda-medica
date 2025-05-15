@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace AgendaMedica.API.Database;
 
-public class ApiContext(DbContextOptions<ApiContext> options) : DbContext(options)
+public class DatabaseContext(DbContextOptions<DatabaseContext> options) : DbContext(options)
 {
     public DbSet<User> Users => Set<User>();
 }
