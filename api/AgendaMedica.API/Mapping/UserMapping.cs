@@ -27,4 +27,17 @@ public static class UserMapping
             BirthDate = userDto.BirthDate
         };
     }
+
+    public static User ToEntity(this UpdateUserDTO userDto, int id)
+    {
+        return new User()
+        {
+            Id = id,
+            Name = userDto.Name,
+            Password = userDto.Password,
+            Email = userDto.Email,
+            Photo = userDto.Photo,
+            BirthDate = userDto.BirthDate
+        };
+    }
 }
