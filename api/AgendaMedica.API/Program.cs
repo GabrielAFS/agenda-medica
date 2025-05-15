@@ -27,6 +27,6 @@ app.UseHttpsRedirection();
 
 app.MapUserEndpoints();
 
-app.MigrateDatabase();
+await app.MigrateDatabaseAsync();
 
 app.Run();
