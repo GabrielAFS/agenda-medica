@@ -1,16 +1,13 @@
+using AgendaMedica.API.Database;
 using AgendaMedica.API.DTOs;
+using AgendaMedica.API.Entities;
+using AgendaMedica.API.Mapping;
+using Microsoft.EntityFrameworkCore;
 
 namespace AgendaMedica.API.Controllers;
 
 public static class UserController
 {
-    private static readonly List<UserDTO> users = [
-        new (1, "Sicrano", "sicrano@email.com", "12345678", "https://photos.com/myphoto.png", DateOnly.Parse("21-10-1985")),
-        new (2, "Beltrano", "beltrano@email.com", "12345678", "https://photos.com/myphoto.png", DateOnly.Parse("11-01-1996")),
-        new (3, "Fulano", "fulano@email.com", "12345678", "https://photos.com/myphoto.png", DateOnly.Parse("09-05-1991")),
-        new (4, "Sicrana", "sicrana@email.com", "12345678", "https://photos.com/myphoto.png", DateOnly.Parse("30-09-1986"))
-    ];
-
     const string GET_USER_ENDPOINT = "GetUser";
 
     public static RouteGroupBuilder MapUserEndpoints(this WebApplication app)
@@ -18,56 +15,50 @@ public static class UserController
         var group = app.MapGroup("/users").WithParameterValidation();
 
         // GET /users
-        group.MapGet("/", () => users);
+        group.MapGet("/", (ApiContext dbContext) => dbContext.Users
+            .Select(user => user.ToDTO())
+            .AsNoTracking()
+        );
 
         // GET /users/:id
-        group.MapGet("/{id}", (int id) =>
+        group.MapGet("/{id}", (int id, ApiContext dbContext) =>
         {
-            UserDTO? user = users.Find(user => user.Id == id);
+            User? user = dbContext.Users.Find(id);
 
-            return user is null ? Results.NotFound() : Results.Ok(user);
+            return user is null ? Results.NotFound() : Results.Ok(user.ToDTO());
         }).WithName(GET_USER_ENDPOINT);
 
         // POST /users
-        group.MapPost("/", (CreateUserDTO newUser) =>
+        group.MapPost("/", (CreateUserDTO newUser, ApiContext dbContext) =>
         {
-            UserDTO user = new(
-                users.Count + 1,
-                newUser.Name,
-                newUser.Email,
-                newUser.Password,
-                newUser.Photo,
-                newUser.BirthDate
+            User user = newUser.ToEntity();
+
+            dbContext.Users.Add(user);
+            dbContext.SaveChanges();
+
+            return Results.CreatedAtRoute(
+                GET_USER_ENDPOINT,
+                new { id = user.Id },
+                user.ToDTO()
             );
-
-            users.Add(user);
-
-            return Results.CreatedAtRoute(GET_USER_ENDPOINT, new { id = user.Id }, user);
         });
 
         // PUT /users/:id
-        group.MapPut("/{id}", (int id, UpdateUserDTO updatedUser) =>
+        group.MapPut("/{id}", (int id, UpdateUserDTO updatedUser, ApiContext dbContext) =>
         {
-            var index = users.FindIndex(user => user.Id == id);
+            var user = dbContext.Users.Find(id);
+            if (user is null) return Results.NotFound();
 
-            if (index == -1) return Results.NotFound();
+            dbContext.Entry(user).CurrentValues.SetValues(updatedUser.ToEntity(id));
+            dbContext.SaveChanges();
 
-            users[index] = new UserDTO(
-                id,
-                updatedUser.Name,
-                updatedUser.Email,
-                updatedUser.Password,
-                updatedUser.Photo,
-                updatedUser.BirthDate
-            );
-
-            return Results.Ok(users[index]);
+            return Results.NoContent();
         });
 
         // DELETE /users/:id
-        group.MapDelete("/{id}", (int id) =>
+        group.MapDelete("/{id}", (int id, ApiContext dbContext) =>
         {
-            users.RemoveAll(user => user.Id == id);
+            dbContext.Users.Where(user => user.Id == id).ExecuteDelete();
 
             return Results.NoContent();
         });
