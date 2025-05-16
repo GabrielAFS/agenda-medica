@@ -8,12 +8,24 @@ public static class PacientMapping
     public static PacientDTO ToDTO(this Pacient pacient)
     {
         return new(
-            Id: pacient.Id,
-            UserId: pacient.UserId,
-            Name: pacient.User!.Name,
-            Email: pacient.User!.Email,
-            Photo: pacient.User!.Photo ?? string.Empty,
-            BirthDate: pacient.User!.BirthDate
+            pacient.Id,
+            pacient.UserId,
+            pacient.User!.Name,
+            pacient.User!.Email,
+            pacient.User!.Photo ?? string.Empty,
+            pacient.User!.BirthDate
+        );
+    }
+
+    public static PacientDTO ToDTO(this Pacient pacient, User user)
+    {
+        return new(
+            pacient.Id,
+            pacient.UserId,
+            user.Name,
+            user.Email,
+            user.Photo ?? string.Empty,
+            user.BirthDate
         );
     }
 }

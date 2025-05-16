@@ -26,6 +26,7 @@ if (app.Environment.IsDevelopment())
 app.UseHttpsRedirection();
 
 app.MapUserEndpoints();
+app.MapPacientEndpoints();
 
 await app.MigrateDatabaseAsync();
 
