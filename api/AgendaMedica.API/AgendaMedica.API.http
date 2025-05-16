@@ -12,6 +12,10 @@ GET {{AgendaMedicaAPI_HostAddress}}/doctors/
 Accept: application/json
 
 ###
+GET {{AgendaMedicaAPI_HostAddress}}/appointment-times/
+Accept: application/json
+
+###
 GET {{AgendaMedicaAPI_HostAddress}}/users/1
 Accept: application/json
 
@@ -48,6 +52,15 @@ Content-Type: application/json
 }
 
 ###
+POST {{AgendaMedicaAPI_HostAddress}}/appointment-times/
+Content-Type: application/json
+
+{
+  "startTime": "2025-05-26T13:00:00Z",
+  "doctorId": 2
+}
+
+###
 PUT {{AgendaMedicaAPI_HostAddress}}/users/1
 Content-Type: application/json
 
@@ -60,4 +73,15 @@ Content-Type: application/json
 }
 
 ###
+POST {{AgendaMedicaAPI_HostAddress}}/appointment-times/
+Content-Type: application/json
+
+{
+  "startTime": "2025-05-26T13:00:00Z",
+  "doctorId": 2
+}
+###
 DELETE {{AgendaMedicaAPI_HostAddress}}/users/1
+
+###
+DELETE {{AgendaMedicaAPI_HostAddress}}/appointment-times/1

@@ -28,6 +28,7 @@ app.UseHttpsRedirection();
 app.MapUserEndpoints();
 app.MapPacientEndpoints();
 app.MapDoctorEndpoints();
+app.MapAppointmentTimeEndpoints();
 
 await app.MigrateDatabaseAsync();
 
