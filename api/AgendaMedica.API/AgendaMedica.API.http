@@ -4,7 +4,23 @@ GET {{AgendaMedicaAPI_HostAddress}}/users/
 Accept: application/json
 
 ###
+GET {{AgendaMedicaAPI_HostAddress}}/pacients/
+Accept: application/json
+
+###
+GET {{AgendaMedicaAPI_HostAddress}}/doctors/
+Accept: application/json
+
+###
 GET {{AgendaMedicaAPI_HostAddress}}/users/1
+Accept: application/json
+
+###
+GET {{AgendaMedicaAPI_HostAddress}}/pacients/1
+Accept: application/json
+
+###
+GET {{AgendaMedicaAPI_HostAddress}}/doctors/1
 Accept: application/json
 
 ###
@@ -20,7 +36,19 @@ Content-Type: application/json
 }
 
 ###
-PUT {{AgendaMedicaAPI_HostAddress}}/users/12
+POST {{AgendaMedicaAPI_HostAddress}}/pacients
+Content-Type: application/json
+
+{
+  "name": "Fulano",
+  "email": "fulano@email.com",
+  "password": "12345678",
+  "photo": "https://photos.com/myphoto.png",
+  "birthDate": "1990-01-01"
+}
+
+###
+PUT {{AgendaMedicaAPI_HostAddress}}/users/1
 Content-Type: application/json
 
 {

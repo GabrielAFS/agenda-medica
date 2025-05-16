@@ -3,9 +3,9 @@ using AgendaMedica.API.Entities;
 
 namespace AgendaMedica.API.Mapping;
 
-public class DoctorMapping
+public static class DoctorMapping
 {
-    public static DoctorDTO ToDTO(Doctor doctor)
+    public static DoctorDTO ToDTO(this Doctor doctor)
     {
         return new DoctorDTO(
             doctor.Id,
@@ -16,6 +16,20 @@ public class DoctorMapping
             doctor.User!.Email,
             doctor.User!.Photo ?? string.Empty,
             doctor.User!.BirthDate
+        );
+    }
+
+    public static DoctorDTO ToDTO(this Doctor doctor, User user)
+    {
+        return new DoctorDTO(
+            doctor.Id,
+            doctor.UserId,
+            doctor.Specialty,
+            doctor.Crm,
+            user.Name,
+            user.Email,
+            user.Photo ?? string.Empty,
+            user.BirthDate
         );
     }
 }
