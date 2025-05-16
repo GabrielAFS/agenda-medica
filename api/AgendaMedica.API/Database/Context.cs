@@ -8,6 +8,8 @@ public class DatabaseContext(DbContextOptions<DatabaseContext> options) : DbCont
     public DbSet<User> Users => Set<User>();
     public DbSet<Doctor> Doctors => Set<Doctor>();
     public DbSet<Pacient> Pacients => Set<Pacient>();
+    public DbSet<AppointmentTime> AppointmentTimes => Set<AppointmentTime>();
+    public DbSet<Appointment> Appointments => Set<Appointment>();
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {

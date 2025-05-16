@@ -7,4 +7,6 @@ public class Doctor
     public required string Crm { get; set; }
     public User? User { get; set; }
     public int UserId { get; set; }
+    public List<AppointmentTime>? AppointmentTimes { get; set; }
+    public List<Appointment>? Appointments { get; set; }
 }
