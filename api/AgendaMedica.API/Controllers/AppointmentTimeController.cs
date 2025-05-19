@@ -13,13 +13,22 @@ public static class AppointmentTimeController
         var group = app.MapGroup("/appointment-times").WithParameterValidation();
 
         // GET /appointment-times
-        group.MapGet("/", async (DatabaseContext dbContext) =>
-            await dbContext.AppointmentTimes
-                .Include(appointmentTime => appointmentTime.Doctor)
-                .Select(appointmentTime => appointmentTime.ToDTO())
-                .AsNoTracking()
-                .ToListAsync()
-        );
+        group.MapGet("/", async (DatabaseContext dbContext, HttpRequest request) =>
+        {
+            string? doctorId = request.Query["doctorId"];
+            IQueryable<AppointmentTime> query = dbContext.AppointmentTimes.Include(at => at.Doctor);
+
+            if (!string.IsNullOrEmpty(doctorId))
+            {
+                query = query.Where(at => at.DoctorId == int.Parse(doctorId));
+            }
+
+            List<AppointmentTimeDTO> appointmentTimes = await query
+                .Select(at => at.ToDTO())
+                .ToListAsync();
+
+            return Results.Ok(appointmentTimes);
+        }).WithName("GetAllAppointmentTimes");
 
         // GET /appointment-times/:id
         group.MapGet("/{id}", async (int id, DatabaseContext dbContext) =>
