@@ -8,4 +8,5 @@ public class User
     public required string Password { get; set; }
     public string? Photo { get; set; }
     public DateOnly BirthDate { get; set; }
+    public string Role { get; set; } = "Pacient";
 }

@@ -21,7 +21,8 @@ public class DatabaseContext(DbContextOptions<DatabaseContext> options) : DbCont
                 Email = "drauzio.varella@email.com",
                 Password = "12345678",
                 Photo = "https://example.com/photo.jpg",
-                BirthDate = new DateOnly(1943, 4, 2)
+                BirthDate = new DateOnly(1943, 4, 2),
+                Role = "Doctor"
             },
             new User
             {
@@ -30,7 +31,8 @@ public class DatabaseContext(DbContextOptions<DatabaseContext> options) : DbCont
                 Email = "anamaria@email.com",
                 Password = "12345678",
                 Photo = "https://example.com/photo.jpg",
-                BirthDate = new DateOnly(1949, 4, 2)
+                BirthDate = new DateOnly(1949, 4, 2),
+                Role = "Pacient"
             },
             new User
             {
@@ -40,6 +42,7 @@ public class DatabaseContext(DbContextOptions<DatabaseContext> options) : DbCont
                 Password = "12345678",
                 Photo = "https://example.com/photo.jpg",
                 BirthDate = new DateOnly(1971, 9, 3),
+                Role = "Pacient"
             },
             new User
             {
@@ -49,6 +52,7 @@ public class DatabaseContext(DbContextOptions<DatabaseContext> options) : DbCont
                 Password = "12345678",
                 Photo = "https://example.com/photo.jpg",
                 BirthDate = new DateOnly(1960, 3, 2),
+                Role = "Doctor"
             }
         );
 
