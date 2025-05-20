@@ -11,7 +11,7 @@ public static class PacientController
 
     public static RouteGroupBuilder MapPacientEndpoints(this WebApplication app)
     {
-        var group = app.MapGroup("/pacients").WithParameterValidation();
+        var group = app.MapGroup("/pacients").WithParameterValidation().RequireAuthorization();
 
         // GET /pacients
         group.MapGet("/", async (DatabaseContext dbContext) =>

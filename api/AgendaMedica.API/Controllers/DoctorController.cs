@@ -1,6 +1,7 @@
 using AgendaMedica.API.Database;
 using AgendaMedica.API.Entities;
 using AgendaMedica.API.Mapping;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.EntityFrameworkCore;
 
 namespace AgendaMedica.API.Controllers;
@@ -11,10 +12,10 @@ public static class DoctorController
 
     public static RouteGroupBuilder MapDoctorEndpoints(this WebApplication app)
     {
-        var group = app.MapGroup("/doctors").WithParameterValidation();
+        var group = app.MapGroup("/doctors").WithParameterValidation().RequireAuthorization();
 
         // GET /doctors
-        group.MapGet("/", async (DatabaseContext dbContext) =>
+        group.MapGet("/", [Authorize(Roles = "Pacient")] async (DatabaseContext dbContext) =>
             await dbContext.Doctors
                 .Include(doctor => doctor.User)
                 .Select(doctor => doctor.ToDTO())

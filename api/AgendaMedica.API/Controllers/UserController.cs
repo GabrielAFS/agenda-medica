@@ -17,14 +17,6 @@ public static class UserController
     {
         var group = app.MapGroup("/users").WithParameterValidation();
 
-        // GET /users
-        group.MapGet("/", async (DatabaseContext dbContext) =>
-            await dbContext.Users
-                .Select(user => user.ToDTO())
-                .AsNoTracking()
-                .ToListAsync()
-        );
-
         // GET /users/me
         group.MapGet("/me", async (DatabaseContext dbContext, HttpContext httpContext) =>
         {
@@ -38,21 +30,6 @@ public static class UserController
 
             return user is null ? Results.NotFound() : Results.Ok(user.ToDTO());
         }).WithName(GET_USER_ENDPOINT).RequireAuthorization();
-
-        // POST /users
-        group.MapPost("/", async (CreateUserDTO newUser, DatabaseContext dbContext) =>
-        {
-            User user = newUser.ToEntity();
-
-            dbContext.Users.Add(user);
-            await dbContext.SaveChangesAsync();
-
-            return Results.CreatedAtRoute(
-                GET_USER_ENDPOINT,
-                new { id = user.Id },
-                user.ToDTO()
-            );
-        });
 
         // POST /login
         group.MapPost("/login", [AllowAnonymous] async (LoginUserDTO userCredentials, DatabaseContext dbContext) =>
@@ -76,15 +53,7 @@ public static class UserController
             await dbContext.SaveChangesAsync();
 
             return Results.NoContent();
-        });
-
-        // DELETE /users/:id
-        group.MapDelete("/{id}", async (int id, DatabaseContext dbContext) =>
-        {
-            await dbContext.Users.Where(user => user.Id == id).ExecuteDeleteAsync();
-
-            return Results.NoContent();
-        });
+        }).RequireAuthorization();
 
         return group;
     }

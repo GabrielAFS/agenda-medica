@@ -10,7 +10,7 @@ public static class AppointmentController
 {
     public static RouteGroupBuilder MapAppointmentEndpoints(this WebApplication app)
     {
-        var group = app.MapGroup("/appointments").WithParameterValidation();
+        var group = app.MapGroup("/appointments").WithParameterValidation().RequireAuthorization();
 
         // GET /appointments
         group.MapGet("/", async (DatabaseContext dbContext) =>
