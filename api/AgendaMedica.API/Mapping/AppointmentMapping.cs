@@ -15,11 +15,10 @@ public static class AppointmentMapping
         );
     }
 
-    public static Appointment ToEntity(this AppointmentDTO appointmentDTO)
+    public static Appointment ToEntity(this CreateAppointmentDTO appointmentDTO)
     {
         return new Appointment
         {
-            Id = appointmentDTO.Id,
             DoctorId = appointmentDTO.DoctorId,
             PacientId = appointmentDTO.PacientId,
             AppointmentTimeId = appointmentDTO.AppointmentTimeId

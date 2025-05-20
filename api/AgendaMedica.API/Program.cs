@@ -29,6 +29,7 @@ app.MapUserEndpoints();
 app.MapPacientEndpoints();
 app.MapDoctorEndpoints();
 app.MapAppointmentTimeEndpoints();
+app.MapAppointmentEndpoints();
 
 await app.MigrateDatabaseAsync();
 
