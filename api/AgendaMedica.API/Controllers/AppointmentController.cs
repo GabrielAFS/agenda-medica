@@ -16,7 +16,6 @@ public static class AppointmentController
         group.MapGet("/", async (DatabaseContext dbContext) =>
         {
             List<AppointmentDTO> appointments = await dbContext.Appointments
-                .Include(appointment => appointment.Doctor)
                 .Include(appointment => appointment.Pacient)
                 .Include(appointment => appointment.AppointmentTime)
                 .Select(appointment => appointment.ToDTO())
@@ -29,7 +28,6 @@ public static class AppointmentController
         group.MapGet("/{id}", async (int id, DatabaseContext dbContext) =>
         {
             Appointment? appointment = await dbContext.Appointments
-                .Include(a => a.Doctor)
                 .Include(a => a.Pacient)
                 .Include(a => a.AppointmentTime)
                 .FirstOrDefaultAsync(a => a.Id == id);

@@ -9,7 +9,6 @@ public static class AppointmentMapping
     {
         return new AppointmentDTO(
             appointment.Id,
-            appointment.DoctorId,
             appointment.PacientId,
             appointment.AppointmentTimeId
         );
@@ -19,7 +18,6 @@ public static class AppointmentMapping
     {
         return new Appointment
         {
-            DoctorId = appointmentDTO.DoctorId,
             PacientId = appointmentDTO.PacientId,
             AppointmentTimeId = appointmentDTO.AppointmentTimeId
         };
