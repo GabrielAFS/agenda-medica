@@ -55,7 +55,7 @@ const DoctorsPage: React.FC = () => {
         <div className='w-full p-4 bg-white rounded-lg md:p-8'>
           <dl className='grid grid-cols-1 justify-items-center gap-8 max-w-screen-xl p-4 mx-auto text-gray-900 sm:grid-cols-2'>
             {dummyDoctors.map((doctor, index) => (
-              <Card key={index.toString()} doctor={doctor} />
+              <Card key={index.toString()} data={doctor} />
             ))}
           </dl>
         </div>

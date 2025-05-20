@@ -8,3 +8,12 @@ export interface IDoctor {
   photo?: string;
   birthDate: string;
 }
+
+export interface IPacient {
+  id: number;
+  userId: number;
+  name: string;
+  email: string;
+  photo?: string;
+  birthDate: string;
+}
