@@ -31,13 +31,14 @@ public static class UserController
             return user is null ? Results.NotFound() : Results.Ok(user.ToDTO());
         }).WithName(GET_USER_ENDPOINT).RequireAuthorization();
 
-        // POST /login
+        // POST /users/login
         group.MapPost("/login", [AllowAnonymous] async (LoginUserDTO userCredentials, DatabaseContext dbContext) =>
         {
             User? existingUser = await dbContext.Users
-                .FirstOrDefaultAsync(u => u.Email == userCredentials.Email && u.Password == userCredentials.Password);
+                .FirstOrDefaultAsync(u => u.Email == userCredentials.Email);
 
-            if (existingUser is null) return Results.NotFound();
+            if (existingUser is null || !BCrypt.Net.BCrypt.EnhancedVerify(userCredentials.Password, existingUser.Password))
+                return Results.NotFound();
 
             string token = JwtBearerService.GenerateToken(existingUser);
             return Results.Ok(new { Token = token });

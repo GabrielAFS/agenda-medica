@@ -13,13 +13,16 @@ public class DatabaseContext(DbContextOptions<DatabaseContext> options) : DbCont
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
+        // Hardcoded password to prevent PendingModelChangesWarning
+        var hashedPassword = "$2a$13$n4OL/KeJzMNogVTLUbA.P.aEncr5g.2IoBBTYesd4/mj0IlKAirma";
+
         modelBuilder.Entity<User>().HasData(
             new User
             {
                 Id = 1,
                 Name = "Dr. Drauzio Varella",
                 Email = "drauzio.varella@email.com",
-                Password = "12345678",
+                Password = hashedPassword,
                 Photo = "https://example.com/photo.jpg",
                 BirthDate = new DateOnly(1943, 4, 2),
                 Role = "Doctor"
@@ -29,7 +32,7 @@ public class DatabaseContext(DbContextOptions<DatabaseContext> options) : DbCont
                 Id = 2,
                 Name = "Ana Maria Braga",
                 Email = "anamaria@email.com",
-                Password = "12345678",
+                Password = hashedPassword,
                 Photo = "https://example.com/photo.jpg",
                 BirthDate = new DateOnly(1949, 4, 2),
                 Role = "Pacient"
@@ -39,7 +42,7 @@ public class DatabaseContext(DbContextOptions<DatabaseContext> options) : DbCont
                 Id = 3,
                 Name = "Luciano Huck",
                 Email = "luciano.huck@email.com",
-                Password = "12345678",
+                Password = hashedPassword,
                 Photo = "https://example.com/photo.jpg",
                 BirthDate = new DateOnly(1971, 9, 3),
                 Role = "Pacient"
@@ -49,7 +52,7 @@ public class DatabaseContext(DbContextOptions<DatabaseContext> options) : DbCont
                 Id = 4,
                 Name = "Marcia Goldschmidt",
                 Email = "marcia.gold@email.com",
-                Password = "12345678",
+                Password = hashedPassword,
                 Photo = "https://example.com/photo.jpg",
                 BirthDate = new DateOnly(1960, 3, 2),
                 Role = "Doctor"
