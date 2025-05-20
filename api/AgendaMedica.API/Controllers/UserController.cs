@@ -1,7 +1,10 @@
+using System.Security.Claims;
 using AgendaMedica.API.Database;
 using AgendaMedica.API.DTOs;
 using AgendaMedica.API.Entities;
 using AgendaMedica.API.Mapping;
+using AgendaMedica.API.Services;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.EntityFrameworkCore;
 
 namespace AgendaMedica.API.Controllers;
@@ -22,13 +25,19 @@ public static class UserController
                 .ToListAsync()
         );
 
-        // GET /users/:id
-        group.MapGet("/{id}", async (int id, DatabaseContext dbContext) =>
+        // GET /users/me
+        group.MapGet("/me", async (DatabaseContext dbContext, HttpContext httpContext) =>
         {
-            User? user = await dbContext.Users.FindAsync(id);
+            if (httpContext.User is null)
+            {
+                return Results.NotFound();
+            }
+
+            var userId = int.Parse(httpContext.User.FindFirst(ClaimTypes.NameIdentifier)?.Value ?? string.Empty);
+            User? user = await dbContext.Users.FindAsync(userId);
 
             return user is null ? Results.NotFound() : Results.Ok(user.ToDTO());
-        }).WithName(GET_USER_ENDPOINT);
+        }).WithName(GET_USER_ENDPOINT).RequireAuthorization();
 
         // POST /users
         group.MapPost("/", async (CreateUserDTO newUser, DatabaseContext dbContext) =>
@@ -43,6 +52,18 @@ public static class UserController
                 new { id = user.Id },
                 user.ToDTO()
             );
+        });
+
+        // POST /login
+        group.MapPost("/login", [AllowAnonymous] async (LoginUserDTO userCredentials, DatabaseContext dbContext) =>
+        {
+            User? existingUser = await dbContext.Users
+                .FirstOrDefaultAsync(u => u.Email == userCredentials.Email && u.Password == userCredentials.Password);
+
+            if (existingUser is null) return Results.NotFound();
+
+            string token = JwtBearerService.GenerateToken(existingUser);
+            return Results.Ok(new { Token = token });
         });
 
         // PUT /users/:id
