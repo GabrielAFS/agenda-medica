@@ -15,12 +15,11 @@ const ScheduleAppointmentPage: React.FC = () => {
   };
 
   return (
-    <div className='flex items-center justify-center min-h-screen p-8 pb-20 gap-16 sm:p-20'>
-      <main className='flex flex-col gap-8 row-start-2 items-start sm:w-3/4'>
+    <div className='flex justify-center min-h-screen p-4 pb-20 gap-16 md:items-center md:p-20'>
+      <main className='flex flex-col gap-2 md:row-start-2 items-start md:w-3/4 w-full'>
         <CardSection
-          title='Dados do Médico'
+          title={doctor.name}
           sections={[
-            { title: "Nome", content: doctor.name },
             { title: "CRM", content: doctor.crm },
             { title: "Especialidade", content: doctor.specialty },
             { title: "Email", content: doctor.email },
