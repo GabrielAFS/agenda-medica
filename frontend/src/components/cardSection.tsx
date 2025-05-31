@@ -39,15 +39,15 @@ const CardSection: React.FC<Props> = ({
       </button>
       {open &&
         sections.map((section, index) => (
-          <>
-            <div key={index} className='flex justify-between'>
+          <React.Fragment key={index.toString()}>
+            <div className='flex justify-between'>
               <p className='text-lg font-bold'>{section.title}</p>
               <p className='text-lg'>{section.content}</p>
             </div>
             {index < sections.length - 1 && (
               <hr className='border-t-0 border-b-[1px]' />
             )}
-          </>
+          </React.Fragment>
         ))}
     </div>
   );
