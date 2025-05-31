@@ -54,11 +54,11 @@ const dummyAppointments: IAppointment[] = [
 
 const AppointmentsPage: React.FC = () => {
   return (
-    <div className='flex items-center justify-center min-h-screen p-8 pb-20 gap-16 sm:p-20'>
-      <main className='flex flex-col gap-8 row-start-2 items-center sm:items-start sm:w-3/4'>
+    <div className='flex items-center justify-center min-h-screen p-8 pb-20 gap-16 md:p-12'>
+      <main className='flex flex-col gap-8 row-start-2 md:items-center items-start w-full md:w-3/4'>
         <p className='text-4xl font-bold'>Agenda</p>
-        <div className='w-full p-4 bg-white rounded-lg md:p-8'>
-          <dl className='grid grid-cols-1 justify-items-center gap-8 max-w-screen-xl p-4 mx-auto text-gray-900 sm:grid-cols-2 sm:p-8'>
+        <div className='w-full p-4 bg-white rounded-lg'>
+          <dl className='grid grid-cols-1 justify-items-center gap-8 max-w-screen-xl p-4 text-gray-900 sm:grid-cols-2'>
             {dummyAppointments.map((appointment, index) => (
               <Card key={index.toString()} data={appointment} />
             ))}
