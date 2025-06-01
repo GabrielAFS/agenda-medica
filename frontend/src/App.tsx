@@ -1,8 +1,22 @@
+import { LocalizationProvider } from "@mui/x-date-pickers";
+import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
+import { ptBR } from "@mui/x-date-pickers/locales";
+
+import AppointmentsPage from "./pages/appointments";
+import DoctorsPage from "./pages/doctors";
+import Home from "./pages/home";
+import ScheduleAppointmentPage from "./pages/scheduleAppointment";
+
 function App() {
   return (
-    <div className='bg-blue-500 text-white p-4'>
-      <h1 className='text-2xl font-bold'>Tailwind CSS está funcionando!</h1>
-    </div>
+    <LocalizationProvider
+      dateAdapter={AdapterDayjs}
+      localeText={
+        ptBR.components.MuiLocalizationProvider.defaultProps.localeText
+      }
+    >
+      <AppointmentsPage />
+    </LocalizationProvider>
   );
 }
 
