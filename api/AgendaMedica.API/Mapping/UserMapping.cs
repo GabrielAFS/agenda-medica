@@ -12,7 +12,8 @@ public static class UserMapping
             user.Name,
             user.Email,
             user.Photo ?? string.Empty,
-            user.BirthDate
+            user.BirthDate,
+            user.Role
         );
     }
 

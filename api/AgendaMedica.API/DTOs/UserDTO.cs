@@ -5,5 +5,6 @@ public record class UserDTO(
   string Name,
   string Email,
   string Photo,
-  DateOnly BirthDate
+  DateOnly BirthDate,
+  string Role
 );

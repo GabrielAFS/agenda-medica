@@ -28,7 +28,35 @@ public static class UserController
             var userId = int.Parse(httpContext.User.FindFirst(ClaimTypes.NameIdentifier)?.Value ?? string.Empty);
             User? user = await dbContext.Users.FindAsync(userId);
 
-            return user is null ? Results.NotFound() : Results.Ok(user.ToDTO());
+            if (user is null)
+            {
+                return Results.NotFound();
+            }
+
+            if (user.Role == "Pacient")
+            {
+                var pacient = await dbContext.Pacients
+                    .Include(p => p.User)
+                    .FirstOrDefaultAsync(p => p.UserId == userId);
+
+                if (pacient is null)
+                {
+                    return Results.NotFound("Associated Pacient not found.");
+                }
+
+                return Results.Ok(pacient.ToDTO(user));
+            }
+
+            var doctor = await dbContext.Doctors
+                    .Include(d => d.User)
+                    .FirstOrDefaultAsync(d => d.UserId == userId);
+
+            if (doctor is null)
+            {
+                return Results.NotFound("Associated Doctor not found.");
+            }
+
+            return Results.Ok(doctor.ToDTO(user));
         }).WithName(GET_USER_ENDPOINT).RequireAuthorization();
 
         // POST /users/login
