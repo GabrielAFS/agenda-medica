@@ -35,7 +35,7 @@ public static class UserController
 
             if (user.Role == "Pacient")
             {
-                var pacient = await dbContext.Pacients
+                Pacient? pacient = await dbContext.Pacients
                     .Include(p => p.User)
                     .FirstOrDefaultAsync(p => p.UserId == userId);
 
@@ -47,7 +47,7 @@ public static class UserController
                 return Results.Ok(pacient.ToDTO(user));
             }
 
-            var doctor = await dbContext.Doctors
+            Doctor? doctor = await dbContext.Doctors
                     .Include(d => d.User)
                     .FirstOrDefaultAsync(d => d.UserId == userId);
 
