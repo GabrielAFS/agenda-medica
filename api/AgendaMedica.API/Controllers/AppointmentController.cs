@@ -17,8 +17,12 @@ public static class AppointmentController
         {
             List<AppointmentDTO> appointments = await dbContext.Appointments
                 .Include(appointment => appointment.Pacient)
+                    .ThenInclude(pacient => pacient!.User)
                 .Include(appointment => appointment.AppointmentTime)
+                    .ThenInclude(appointmentTime => appointmentTime!.Doctor)
+                        .ThenInclude(doctor => doctor!.User)
                 .Select(appointment => appointment.ToDTO())
+                .AsNoTracking()
                 .ToListAsync();
 
             return Results.Ok(appointments);
@@ -28,9 +32,10 @@ public static class AppointmentController
         group.MapGet("/{id}", async (int id, DatabaseContext dbContext) =>
         {
             Appointment? appointment = await dbContext.Appointments
-                .Include(a => a.Pacient)
-                .Include(a => a.AppointmentTime)
-                .FirstOrDefaultAsync(a => a.Id == id);
+                .Include(appointment => appointment.Pacient)
+                    .ThenInclude(pacient => pacient!.User)
+                .Include(appointment => appointment.AppointmentTime)
+                .FirstOrDefaultAsync(appointment => appointment.Id == id);
 
             if (appointment is null) return Results.NotFound();
 

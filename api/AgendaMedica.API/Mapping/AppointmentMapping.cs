@@ -7,10 +7,27 @@ public static class AppointmentMapping
 {
     public static AppointmentDTO ToDTO(this Appointment appointment)
     {
+        if (appointment.AppointmentTime == null)
+        {
+            Console.WriteLine($"Warning: AppointmentTime is null for AppointmentId: {appointment.Id}");
+            throw new NullReferenceException("AppointmentTime is null in AppointmentMapping.ToDTO");
+        }
+        if (appointment.AppointmentTime.Doctor == null)
+        {
+            Console.WriteLine($"Warning: Doctor is null for AppointmentTimeId: {appointment.AppointmentTime.Id} (AppointmentId: {appointment.Id})");
+            throw new NullReferenceException("Doctor is null in AppointmentMapping.ToDTO");
+        }
+        if (appointment.Pacient == null)
+        {
+            Console.WriteLine($"Warning: Pacient is null for AppointmentId: {appointment.Id}");
+            throw new NullReferenceException("Pacient is null in AppointmentMapping.ToDTO");
+        }
+
         return new AppointmentDTO(
             appointment.Id,
-            appointment.PacientId,
-            appointment.AppointmentTimeId
+            appointment.AppointmentTime.Doctor.ToDTO(),
+            appointment.Pacient!.ToDTO(),
+            appointment.AppointmentTime.StartTime
         );
     }
 
