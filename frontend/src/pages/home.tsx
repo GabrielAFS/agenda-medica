@@ -1,14 +1,26 @@
 import React, { useState } from "react";
 import Button from "../components/button";
+import { useAuth } from "../hooks/useAuth";
 
 const Home: React.FC = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [loading, setLoading] = useState(false);
+
+  const { signIn } = useAuth();
 
   const handleLogin = (e: React.FormEvent) => {
     e.preventDefault();
-    console.log("Email:", email);
-    console.log("Senha:", password);
+    setLoading(true);
+
+    signIn({ email, password })
+      .catch((error: any) => {
+        console.error("Login failed:", error);
+        alert("Login failed. Please check your credentials.");
+      })
+      .finally(() => {
+        setLoading(false);
+      });
   };
 
   return (
@@ -53,6 +65,7 @@ const Home: React.FC = () => {
             </div>
             <Button
               type='submit'
+              loading={loading}
               className='w-full bg-blue-500 text-white px-4 py-2 rounded-md hover:bg-blue-600'
             >
               Entrar

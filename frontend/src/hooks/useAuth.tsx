@@ -14,9 +14,14 @@ import { api } from "../utils/axios";
 
 type User = IDoctor | IPacient | null;
 
+interface ILoginData {
+  email: string;
+  password: string;
+}
+
 interface IAuthContextData {
   user: User;
-  signIn: (data: any) => void;
+  signIn: (data: ILoginData) => Promise<void>;
   signOut: () => void;
 }
 
@@ -41,12 +46,15 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
     try {
       const response = await api.get("/users/me");
       const userData = response.data;
+      const isDoctor = userData.hasOwnProperty("crm");
 
-      if (userData.role === "doctor") {
+      if (isDoctor) {
         setUser(userData as IDoctor);
       } else {
         setUser(userData as IPacient);
       }
+
+      return isDoctor;
     } catch (error) {
       console.error("Failed to fetch user data:", error);
       clearHttpToken();
@@ -54,9 +62,8 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
     }
   };
 
-  // call this function when you want to authenticate the user
   const signIn = useCallback(
-    async (data: any) => {
+    async (data: ILoginData) => {
       // login user in the backend and get token
       const response = await api.post("/users/login", {
         email: data.email,
@@ -66,18 +73,18 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
 
       setHttpToken(token);
 
-      await getUser(); // fetch user data after setting token
+      const isDoctor = await getUser(); // fetch user data after setting token
+
       // navigate to appointments if user is doctor, otherwise to doctors page
-      if (user && user.role === "doctor") {
-        navigate("/appointments", { replace: true });
+      if (isDoctor) {
+        navigate("/agenda", { replace: true });
       } else {
-        navigate("/doctors", { replace: true });
+        navigate("/medicos", { replace: true });
       }
     },
     [navigate, user]
   );
 
-  // call this function to sign out logged in user
   const signOut = useCallback(() => {
     setUser(null);
     navigate("/", { replace: true });
