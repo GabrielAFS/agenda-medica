@@ -45,10 +45,35 @@ public static class AppointmentController
         // POST /appointments
         group.MapPost("/", async (CreateAppointmentDTO appointmentDTO, DatabaseContext dbContext) =>
         {
+            bool isTimeSlotAvailable = await dbContext.AppointmentTimes
+                .AnyAsync(at => at.Id == appointmentDTO.AppointmentTimeId && at.IsAvailable);
+
+            if (!isTimeSlotAvailable)
+            {
+                return Results.BadRequest("O horário selecionado não está disponível.");
+            }
+
             Appointment appointment = appointmentDTO.ToEntity();
+
             await dbContext.Appointments.AddAsync(appointment);
             await dbContext.SaveChangesAsync();
-            return Results.Created($"/appointments/{appointment.Id}", appointment.ToDTO());
+
+            // Mark the appointment time as no longer available
+            AppointmentTime? appointmentTime = await dbContext.AppointmentTimes
+                .FirstOrDefaultAsync(at => at.Id == appointment.AppointmentTimeId);
+
+            if (appointmentTime is not null)
+            {
+                appointmentTime.IsAvailable = false;
+                dbContext.AppointmentTimes.Update(appointmentTime);
+                await dbContext.SaveChangesAsync();
+            }
+            else
+            {
+                return Results.NotFound("Horário de consulta não encontrado.");
+            }
+
+            return Results.Created($"/appointments/{appointment.Id}", appointment.ToSimpleDTO());
         });
 
         return group;

@@ -31,6 +31,15 @@ public static class AppointmentMapping
         );
     }
 
+    public static SimpleAppointmentDTO ToSimpleDTO(this Appointment appointment)
+    {
+        return new SimpleAppointmentDTO(
+            appointment.Id,
+            appointment.AppointmentTimeId,
+            appointment.PacientId
+        );
+    }
+
     public static Appointment ToEntity(this CreateAppointmentDTO appointmentDTO)
     {
         return new Appointment
