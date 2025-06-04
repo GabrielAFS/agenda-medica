@@ -6,3 +6,8 @@ export interface IAppointment {
   doctor: IDoctor;
   startTime: string;
 }
+
+export interface IAppointmentTime {
+  id: number;
+  startTime: string;
+}

@@ -5,53 +5,19 @@ import { PickerValue } from "@mui/x-date-pickers/internals";
 import CardSection from "../components/cardSection";
 import Button from "../components/button";
 import { useDoctor } from "../hooks/useDoctor";
-
-// Simulated available dates and times for the doctor
-const availableDatesAndTimes = [
-  {
-    id: 1,
-    startTime: "2025-06-04T08:00:00",
-  },
-  {
-    id: 2,
-    startTime: "2025-06-04T09:00:00",
-  },
-  {
-    id: 3,
-    startTime: "2025-06-04T10:00:00",
-  },
-  {
-    id: 4,
-    startTime: "2025-06-04T11:00:00",
-  },
-  {
-    id: 5,
-    startTime: "2025-06-04T14:00:00",
-  },
-  {
-    id: 6,
-    startTime: "2025-06-04T15:00:00",
-  },
-  {
-    id: 7,
-    startTime: "2025-06-04T16:00:00",
-  },
-  {
-    id: 8,
-    startTime: "2025-06-04T17:00:00",
-  },
-];
+import { useScheduleAppointment } from "../hooks/useScheduleAppointment";
 
 const ScheduleAppointmentPage: React.FC = () => {
+  const { selectedDoctor: doctor } = useDoctor();
+  const { appointmentTimes } = useScheduleAppointment();
+
   const [selectedDate, setSelectedDate] = React.useState<PickerValue | null>(
     null
   );
 
-  const availableDates = availableDatesAndTimes.map(
+  const availableDates = appointmentTimes.map(
     (appointment) => appointment.startTime.split("T")[0]
   );
-
-  const { selectedDoctor: doctor } = useDoctor();
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
@@ -100,9 +66,10 @@ const ScheduleAppointmentPage: React.FC = () => {
               }
               shouldDisableTime={(time, view) => {
                 if (view === "hours") {
-                  return !availableDatesAndTimes.some(
+                  return !appointmentTimes.some(
                     (dates) =>
-                      dates.startTime === time.format("YYYY-MM-DDTHH:mm:ss")
+                      dates.startTime ===
+                      `${time.format("YYYY-MM-DDTHH:mm:ss")}Z`
                   );
                 }
                 return false;

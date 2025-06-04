@@ -7,7 +7,6 @@ import {
   useMemo,
   useState,
 } from "react";
-import { useNavigate } from "react-router-dom";
 
 import { IAppointment } from "../types/appointments";
 import { api } from "../utils/axios";
