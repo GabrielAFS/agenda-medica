@@ -1,3 +1,4 @@
+using System.Security.Claims;
 using AgendaMedica.API.Database;
 using AgendaMedica.API.DTOs;
 using AgendaMedica.API.Entities;
@@ -13,14 +14,23 @@ public static class AppointmentController
         var group = app.MapGroup("/appointments").WithParameterValidation().RequireAuthorization();
 
         // GET /appointments
-        group.MapGet("/", async (DatabaseContext dbContext) =>
+        group.MapGet("/", async (DatabaseContext dbContext, HttpContext httpContext) =>
         {
+            var userId = int.Parse(httpContext.User.FindFirst(ClaimTypes.NameIdentifier)?.Value ?? string.Empty);
+
+            if (userId <= 0 || httpContext.User.Identity is null)
+            {
+                return Results.BadRequest("Usuário não autenticado.");
+            }
+
             List<AppointmentDTO> appointments = await dbContext.Appointments
                 .Include(appointment => appointment.Pacient)
                     .ThenInclude(pacient => pacient!.User)
                 .Include(appointment => appointment.AppointmentTime)
                     .ThenInclude(appointmentTime => appointmentTime!.Doctor)
                         .ThenInclude(doctor => doctor!.User)
+                .Where(appointment => appointment.Pacient!.UserId == userId ||
+                                     appointment.AppointmentTime!.Doctor!.UserId == userId)
                 .Select(appointment => appointment.ToDTO())
                 .AsNoTracking()
                 .ToListAsync();
