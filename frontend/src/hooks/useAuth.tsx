@@ -4,7 +4,6 @@ import {
   useCallback,
   useContext,
   useMemo,
-  useState,
 } from "react";
 import { useNavigate } from "react-router-dom";
 
@@ -28,21 +27,17 @@ interface IAuthContextData {
 const AuthContext = createContext<IAuthContextData>({} as IAuthContextData);
 
 export const AuthProvider = ({ children }: { children: ReactNode }) => {
-  const [user, setUser] = useState<User>(null);
-  const [token, setToken] = useLocalStorage<string | null>("token", null);
+  const [user, setUser] = useLocalStorage<User>("user", null);
+  const [, setToken] = useLocalStorage<string | null>("token", null);
   const navigate = useNavigate();
 
-  const clearHttpToken = () => {
+  const clearHttpToken = useCallback(() => {
     delete api.defaults.headers.common["Authorization"];
     setToken(null);
-  };
+    setUser(null);
+  }, [setToken, setUser]);
 
-  const setHttpToken = (token: string) => {
-    api.defaults.headers.common["Authorization"] = `Bearer ${token}`;
-    setToken(token);
-  };
-
-  const getUser = async () => {
+  const getUser = useCallback(async () => {
     try {
       const response = await api.get("/users/me");
       const userData = response.data;
@@ -58,9 +53,8 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
     } catch (error) {
       console.error("Failed to fetch user data:", error);
       clearHttpToken();
-      setUser(null);
     }
-  };
+  }, [setUser, clearHttpToken]);
 
   const signIn = useCallback(
     async (data: ILoginData) => {
@@ -71,7 +65,9 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
       });
       const { token } = response.data;
 
-      setHttpToken(token);
+      // setHttpToken logic inlined here
+      api.defaults.headers.common["Authorization"] = `Bearer ${token}`;
+      setToken(token);
 
       const isDoctor = await getUser(); // fetch user data after setting token
 
@@ -82,13 +78,14 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
         navigate("/medicos", { replace: true });
       }
     },
-    [navigate, user]
+    [navigate, setToken, getUser]
   );
 
   const signOut = useCallback(() => {
     setUser(null);
+    setToken(null);
     navigate("/", { replace: true });
-  }, [navigate]);
+  }, [navigate, setToken, setUser]);
 
   const value = useMemo(
     () => ({
