@@ -9,7 +9,7 @@ import { useScheduleAppointment } from "../hooks/useScheduleAppointment";
 
 const ScheduleAppointmentPage: React.FC = () => {
   const { selectedDoctor: doctor } = useDoctor();
-  const { appointmentTimes } = useScheduleAppointment();
+  const { appointmentTimes, scheduleAppointment } = useScheduleAppointment();
 
   const [selectedDate, setSelectedDate] = React.useState<PickerValue | null>(
     null
@@ -26,11 +26,31 @@ const ScheduleAppointmentPage: React.FC = () => {
       return;
     }
 
-    alert(
-      `Consulta agendada com ${doctor?.name} no dia ${selectedDate.format(
-        "DD/MM/YYYY"
-      )} às ${selectedDate.format("HH:mm")}.`
+    const selectedTime = selectedDate.format("YYYY-MM-DDTHH:mm:ss");
+    const appointmentTime = appointmentTimes.find(
+      (time) => time.startTime === `${selectedTime}Z`
     );
+
+    if (!appointmentTime) {
+      alert("Horário selecionado não disponível.");
+      return;
+    }
+
+    scheduleAppointment(appointmentTime.id)
+      .then(() => {
+        alert(
+          `Consulta agendada com ${doctor?.name} no dia ${selectedDate.format(
+            "DD/MM/YYYY"
+          )} às ${selectedDate.format("HH:mm")}.`
+        );
+      })
+      .catch((error) => {
+        console.error("Erro ao agendar consulta:", error);
+        alert("Erro ao agendar consulta. Tente novamente mais tarde.");
+      })
+      .finally(() => {
+        setSelectedDate(null);
+      });
   };
 
   return (

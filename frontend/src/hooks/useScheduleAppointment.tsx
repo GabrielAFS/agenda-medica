@@ -50,10 +50,29 @@ export const ScheduleAppointmentProvider = ({
   const scheduleAppointment = async (appointmentTimeId: number) => {
     const pacientId = user?.id;
 
-    // Logic to schedule the appointment
-    console.log(
-      `Scheduling appointment for pacient ${pacientId} at time ${appointmentTimeId}`
-    );
+    try {
+      const response = await api.post(
+        "/appointments",
+        {
+          pacientId,
+          appointmentTimeId,
+        },
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
+
+      if (response.status !== 201) {
+        throw new Error("Failed to schedule appointment");
+      }
+
+      await fetchAppointmentTimes();
+    } catch (error) {
+      console.error("Error scheduling appointment:", error);
+      throw error;
+    }
   };
 
   useEffect(() => {
