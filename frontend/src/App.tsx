@@ -8,6 +8,7 @@ import DoctorsPage from "./pages/doctors";
 import AppointmentsPage from "./pages/appointments";
 import ScheduleAppointmentPage from "./pages/scheduleAppointment";
 import PacientAppointmentsPage from "./pages/pacientAppointments";
+import ManageAppointmentTimesPage from "./pages/manageAppointmentTimes";
 
 import { AuthProvider } from "./hooks/useAuth";
 import { ProtectedRoute } from "./components/routes/protected";
@@ -34,6 +35,14 @@ function App() {
                   element={
                     <ProtectedRoute>
                       <AppointmentsPage />
+                    </ProtectedRoute>
+                  }
+                />
+                <Route
+                  path='/agenda/gerenciar'
+                  element={
+                    <ProtectedRoute>
+                      <ManageAppointmentTimesPage />
                     </ProtectedRoute>
                   }
                 />
