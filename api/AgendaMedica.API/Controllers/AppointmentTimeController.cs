@@ -46,9 +46,20 @@ public static class AppointmentTimeController
         // POST /appointment-times
         group.MapPost("/", [Authorize(Roles = "Doctor")] async (CreateAppointmentTimeDTO appointmentTimeDTO, DatabaseContext dbContext) =>
         {
+            // check if start time already exists for the doctor
+            bool exists = await dbContext.AppointmentTimes
+                .AnyAsync(at => at.DoctorId == appointmentTimeDTO.DoctorId && at.StartTime == appointmentTimeDTO.StartTime);
+
+            if (exists)
+            {
+                return Results.BadRequest("Um horário de consulta já existe para este médico nesse horário.");
+            }
+
             AppointmentTime appointmentTime = appointmentTimeDTO.ToEntity();
+
             await dbContext.AppointmentTimes.AddAsync(appointmentTime);
             await dbContext.SaveChangesAsync();
+
             return Results.Created($"/appointment-times/{appointmentTime.Id}", appointmentTime.ToDTO());
         });
 
