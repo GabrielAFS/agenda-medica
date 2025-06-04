@@ -5,6 +5,7 @@ import {
   useEffect,
   useState,
 } from "react";
+import { Dayjs } from "dayjs";
 
 import { IAppointmentTime } from "../types/appointments";
 import { api } from "../utils/axios";
@@ -13,8 +14,12 @@ import { useDoctor } from "./useDoctor";
 import { useAuth } from "./useAuth";
 
 interface IScheduleAppointmentContextData {
+  loading: boolean;
+
   appointmentTimes: IAppointmentTime[];
   scheduleAppointment: (appointmentTimeId: number) => Promise<void>;
+  addAppointmentTime: (newDate: Dayjs | null) => Promise<void>;
+  deleteAppointmentTime: (id: number) => Promise<void>;
 }
 
 const ScheduleAppointmentContext =
@@ -33,6 +38,7 @@ export const ScheduleAppointmentProvider = ({
   const [appointmentTimes, setAppointmentTimes] = useState<IAppointmentTime[]>(
     []
   );
+  const [loading, setLoading] = useState<boolean>(false);
 
   const fetchAppointmentTimes = useCallback(async () => {
     // Logic to fetch appointment times for a specific doctor
@@ -75,13 +81,70 @@ export const ScheduleAppointmentProvider = ({
     }
   };
 
+  const addAppointmentTime = async (newDate: Dayjs | null) => {
+    if (!newDate) return;
+
+    setLoading(true);
+
+    try {
+      const response = await api.post(
+        "/appointment-times",
+        {
+          startTime: newDate.toISOString(),
+          doctorId: user?.id, // Assuming user is a doctor
+        },
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
+
+      if (response.status !== 201) {
+        throw new Error("Failed to create appointment time");
+      }
+
+      await fetchAppointmentTimes();
+    } catch (err) {
+      console.error("Error adding appointment time:", err);
+      // TODO: Improve error handling by getting error.response.data
+      alert("Erro ao adicionar horário");
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const deleteAppointmentTime = async (id: number) => {
+    setLoading(true);
+
+    try {
+      await api.delete(`/appointment-times/${id}`, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+      setAppointmentTimes((prev) => prev.filter((a) => a.id !== id));
+    } catch (err) {
+      console.error("Error deleting appointment time:", err);
+      alert("Erro ao excluir horário");
+    } finally {
+      setLoading(false);
+    }
+  };
+
   useEffect(() => {
     fetchAppointmentTimes();
   }, [fetchAppointmentTimes]);
 
   return (
     <ScheduleAppointmentContext.Provider
-      value={{ appointmentTimes, scheduleAppointment }}
+      value={{
+        loading,
+        appointmentTimes,
+        scheduleAppointment,
+        addAppointmentTime,
+        deleteAppointmentTime,
+      }}
     >
       {children}
     </ScheduleAppointmentContext.Provider>
