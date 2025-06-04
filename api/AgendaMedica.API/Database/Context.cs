@@ -69,10 +69,10 @@ public class DatabaseContext(DbContextOptions<DatabaseContext> options) : DbCont
             },
             new Doctor
             {
-                Id = 4,
+                Id = 2,
                 Specialty = "Nutricionista",
                 Crm = "654321",
-                UserId = 2
+                UserId = 4
             }
         );
 
