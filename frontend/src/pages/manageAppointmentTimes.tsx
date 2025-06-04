@@ -3,9 +3,10 @@ import dayjs, { Dayjs } from "dayjs";
 import { DataGrid } from "@mui/x-data-grid/DataGrid";
 import { GridColDef } from "@mui/x-data-grid/models/colDef";
 import { DateTimePicker } from "@mui/x-date-pickers/DateTimePicker";
-import { Button, Box } from "@mui/material";
+import { Box, Button as MUIButton } from "@mui/material";
 import DeleteIcon from "@mui/icons-material/Delete";
 
+import Button from "../components/button";
 import { useScheduleAppointment } from "../hooks/useScheduleAppointment";
 
 const ManageAppointmentTimesPage: React.FC = () => {
@@ -33,13 +34,13 @@ const ManageAppointmentTimesPage: React.FC = () => {
       sortable: false,
       filterable: false,
       renderCell: (params: any) => (
-        <Button
+        <MUIButton
           color='error'
           startIcon={<DeleteIcon />}
           onClick={() => deleteAppointmentTime(params.row.id)}
         >
           Excluir
-        </Button>
+        </MUIButton>
       ),
       width: 150,
     },
@@ -61,7 +62,7 @@ const ManageAppointmentTimesPage: React.FC = () => {
           ampmInClock={false}
         />
         <Button
-          variant='contained'
+          className='m-0 rounded-[4px]'
           onClick={() => addAppointmentTime(newDate)}
           disabled={!newDate}
         >

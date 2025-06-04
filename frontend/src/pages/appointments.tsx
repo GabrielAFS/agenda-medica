@@ -1,10 +1,10 @@
 import Card from "../components/card";
+import Button from "../components/button";
 import { useAppointments } from "../hooks/useAppointments";
 
 import React from "react";
 import { DatePicker } from "@mui/x-date-pickers";
 import dayjs, { Dayjs } from "dayjs";
-import Button from "../components/button";
 import { useNavigate } from "react-router-dom";
 
 const AppointmentsPage: React.FC = () => {
@@ -36,7 +36,7 @@ const AppointmentsPage: React.FC = () => {
             className='w-full md:w-auto'
           />
           <Button
-            className='h-full rounded-md m-0'
+            className='h-full rounded-[4px] m-0'
             onClick={() => navigate("/agenda/gerenciar")}
           >
             Gerenciar Horários
