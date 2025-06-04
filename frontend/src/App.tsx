@@ -1,17 +1,9 @@
-import { Route, Routes } from "react-router-dom";
 import { LocalizationProvider } from "@mui/x-date-pickers";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import { ptBR } from "@mui/x-date-pickers/locales";
 
-import Home from "./pages/home";
-import DoctorsPage from "./pages/doctors";
-import AppointmentsPage from "./pages/appointments";
-import ScheduleAppointmentPage from "./pages/scheduleAppointment";
-import PacientAppointmentsPage from "./pages/pacientAppointments";
-import ManageAppointmentTimesPage from "./pages/manageAppointmentTimes";
-
+import Routes from "./components/routes";
 import { AuthProvider } from "./hooks/useAuth";
-import { ProtectedRoute } from "./components/routes/protected";
 import { AppointmentProvider } from "./hooks/useAppointments";
 import { DoctorProvider } from "./hooks/useDoctor";
 import { ScheduleAppointmentProvider } from "./hooks/useScheduleAppointment";
@@ -28,49 +20,7 @@ function App() {
         <DoctorProvider>
           <AppointmentProvider>
             <ScheduleAppointmentProvider>
-              <Routes>
-                <Route path='/' element={<Home />} />
-                <Route
-                  path='/agenda'
-                  element={
-                    <ProtectedRoute>
-                      <AppointmentsPage />
-                    </ProtectedRoute>
-                  }
-                />
-                <Route
-                  path='/agenda/gerenciar'
-                  element={
-                    <ProtectedRoute>
-                      <ManageAppointmentTimesPage />
-                    </ProtectedRoute>
-                  }
-                />
-                <Route
-                  path='/medicos'
-                  element={
-                    <ProtectedRoute>
-                      <DoctorsPage />
-                    </ProtectedRoute>
-                  }
-                />
-                <Route
-                  path='/marcar-consulta' // TODO: Change to /medicos/:id/agendar-consulta
-                  element={
-                    <ProtectedRoute>
-                      <ScheduleAppointmentPage />
-                    </ProtectedRoute>
-                  }
-                />
-                <Route
-                  path='/minhas-consultas'
-                  element={
-                    <ProtectedRoute>
-                      <PacientAppointmentsPage />
-                    </ProtectedRoute>
-                  }
-                />
-              </Routes>
+              <Routes />
             </ScheduleAppointmentProvider>
           </AppointmentProvider>
         </DoctorProvider>
