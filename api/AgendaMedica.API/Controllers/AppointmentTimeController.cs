@@ -26,7 +26,7 @@ public static class AppointmentTimeController
 
             List<AppointmentTimeDTO> appointmentTimes = await query
                 .Where(at => at.IsAvailable)
-                .OrderBy(at => at.StartTime)
+                .OrderByDescending(at => at.StartTime)
                 .Select(at => at.ToDTO())
                 .ToListAsync();
 
