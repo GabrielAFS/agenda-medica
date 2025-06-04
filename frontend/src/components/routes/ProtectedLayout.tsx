@@ -1,5 +1,10 @@
 import React from "react";
 import { Link, useLocation } from "react-router-dom";
+import CalendarMonthIcon from "@mui/icons-material/CalendarMonth";
+import PeopleAltIcon from "@mui/icons-material/PeopleAlt";
+import LogoutIcon from "@mui/icons-material/Logout";
+import AssignmentIcon from "@mui/icons-material/Assignment";
+
 import { useAuth } from "../../hooks/useAuth";
 
 const ProtectedLayout: React.FC<{ children: React.ReactNode }> = ({
@@ -26,12 +31,14 @@ const ProtectedLayout: React.FC<{ children: React.ReactNode }> = ({
                   : "text-gray-700 hover:bg-blue-50"
               }`}
             >
+              <CalendarMonthIcon fontSize='small' className='mr-2' />
               Agenda
             </Link>
             <button
               className='text-lg text-red-600 text-left px-2 py-2 rounded hover:bg-red-50 transition-colors'
               onClick={signOut}
             >
+              <LogoutIcon fontSize='small' className='mr-2' />
               Logout
             </button>
           </>
@@ -45,6 +52,7 @@ const ProtectedLayout: React.FC<{ children: React.ReactNode }> = ({
                   : "text-gray-700 hover:bg-blue-50"
               }`}
             >
+              <PeopleAltIcon fontSize='small' className='mr-2' />
               Médicos
             </Link>
             <Link
@@ -55,12 +63,14 @@ const ProtectedLayout: React.FC<{ children: React.ReactNode }> = ({
                   : "text-gray-700 hover:bg-blue-50"
               }`}
             >
+              <AssignmentIcon fontSize='small' className='mr-2' />
               Consultas
             </Link>
             <button
               className='text-lg text-red-600 text-left px-2 py-2 rounded hover:bg-red-50 transition-colors'
               onClick={signOut}
             >
+              <LogoutIcon fontSize='small' className='mr-2' />
               Logout
             </button>
           </>
