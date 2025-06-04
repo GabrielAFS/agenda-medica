@@ -5,9 +5,10 @@ import { dateFormat } from "../utils/dateFormat";
 
 interface Props {
   data: IDoctor | IAppointment;
+  onButtonClick?: () => void;
 }
 
-const Card: React.FC<Props> = ({ data }) => {
+const Card: React.FC<Props> = ({ data, onButtonClick }) => {
   const isDoctor = data.hasOwnProperty("crm");
   const title = isDoctor
     ? (data as IDoctor).name
@@ -57,7 +58,7 @@ const Card: React.FC<Props> = ({ data }) => {
         {renderDescription()}
 
         <div className='flex mt-4 md:mt-6'>
-          <Button onClick={() => {}} outline>
+          <Button onClick={onButtonClick} outline>
             {isDoctor ? "Agendar consulta" : "Ver detalhes"}
           </Button>
         </div>

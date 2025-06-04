@@ -11,6 +11,7 @@ import ScheduleAppointmentPage from "./pages/scheduleAppointment";
 import { AuthProvider } from "./hooks/useAuth";
 import { ProtectedRoute } from "./components/routes/protected";
 import { AppointmentProvider } from "./hooks/useAppointments";
+import { DoctorProvider } from "./hooks/useDoctor";
 
 function App() {
   return (
@@ -21,35 +22,37 @@ function App() {
       }
     >
       <AuthProvider>
-        <AppointmentProvider>
-          <Routes>
-            <Route path='/' element={<Home />} />
-            <Route
-              path='/agenda'
-              element={
-                <ProtectedRoute>
-                  <AppointmentsPage />
-                </ProtectedRoute>
-              }
-            />
-            <Route
-              path='/medicos'
-              element={
-                <ProtectedRoute>
-                  <DoctorsPage />
-                </ProtectedRoute>
-              }
-            />
-            <Route
-              path='/marcar-consulta'
-              element={
-                <ProtectedRoute>
-                  <ScheduleAppointmentPage />
-                </ProtectedRoute>
-              }
-            />
-          </Routes>
-        </AppointmentProvider>
+        <DoctorProvider>
+          <AppointmentProvider>
+            <Routes>
+              <Route path='/' element={<Home />} />
+              <Route
+                path='/agenda'
+                element={
+                  <ProtectedRoute>
+                    <AppointmentsPage />
+                  </ProtectedRoute>
+                }
+              />
+              <Route
+                path='/medicos'
+                element={
+                  <ProtectedRoute>
+                    <DoctorsPage />
+                  </ProtectedRoute>
+                }
+              />
+              <Route
+                path='/marcar-consulta'
+                element={
+                  <ProtectedRoute>
+                    <ScheduleAppointmentPage />
+                  </ProtectedRoute>
+                }
+              />
+            </Routes>
+          </AppointmentProvider>
+        </DoctorProvider>
       </AuthProvider>
     </LocalizationProvider>
   );
