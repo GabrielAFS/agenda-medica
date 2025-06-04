@@ -84,6 +84,11 @@ public static class AppointmentTimeController
             AppointmentTime? appointmentTime = await dbContext.AppointmentTimes.FindAsync(id);
             if (appointmentTime is null) return Results.NotFound();
 
+            if (!appointmentTime.IsAvailable)
+            {
+                return Results.BadRequest("Não é possível excluir um horário de consulta que já foi reservado.");
+            }
+
             dbContext.AppointmentTimes.Remove(appointmentTime);
             await dbContext.SaveChangesAsync();
 
