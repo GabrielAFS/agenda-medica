@@ -42,8 +42,9 @@ export const ScheduleAppointmentProvider = ({
 
   const fetchAppointmentTimes = useCallback(async () => {
     // Logic to fetch appointment times for a specific doctor
+    const doctorId = user && "crm" in user ? user.id : selectedDoctor?.id;
     const response = await api.get("/appointment-times", {
-      params: { doctorId: selectedDoctor?.id },
+      params: { doctorId },
       headers: {
         Authorization: `Bearer ${token}`,
       },
@@ -51,7 +52,7 @@ export const ScheduleAppointmentProvider = ({
     const data: IAppointmentTime[] = response.data;
 
     setAppointmentTimes(data);
-  }, [selectedDoctor, token]);
+  }, [selectedDoctor, user, token]);
 
   const scheduleAppointment = async (appointmentTimeId: number) => {
     const pacientId = user?.id;
