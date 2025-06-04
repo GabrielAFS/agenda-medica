@@ -1,96 +1,69 @@
 import React from "react";
-import { DatePicker } from "@mui/x-date-pickers/DatePicker";
-import { TimePicker } from "@mui/x-date-pickers/TimePicker";
+import { DateTimePicker } from "@mui/x-date-pickers";
+import { PickerValue } from "@mui/x-date-pickers/internals";
 
 import CardSection from "../components/cardSection";
 import Button from "../components/button";
-import { PickerValue } from "@mui/x-date-pickers/internals";
+import { useDoctor } from "../hooks/useDoctor";
+
+// Simulated available dates and times for the doctor
+const availableDatesAndTimes = [
+  {
+    id: 1,
+    startTime: "2025-06-04T08:00:00",
+  },
+  {
+    id: 2,
+    startTime: "2025-06-04T09:00:00",
+  },
+  {
+    id: 3,
+    startTime: "2025-06-04T10:00:00",
+  },
+  {
+    id: 4,
+    startTime: "2025-06-04T11:00:00",
+  },
+  {
+    id: 5,
+    startTime: "2025-06-04T14:00:00",
+  },
+  {
+    id: 6,
+    startTime: "2025-06-04T15:00:00",
+  },
+  {
+    id: 7,
+    startTime: "2025-06-04T16:00:00",
+  },
+  {
+    id: 8,
+    startTime: "2025-06-04T17:00:00",
+  },
+];
 
 const ScheduleAppointmentPage: React.FC = () => {
-  const [availableTimes, setAvailableTimes] = React.useState<string[]>([]);
   const [selectedDate, setSelectedDate] = React.useState<PickerValue | null>(
     null
   );
-  const [selectedTime, setSelectedTime] = React.useState<PickerValue | null>(
-    null
+
+  const availableDates = availableDatesAndTimes.map(
+    (appointment) => appointment.startTime.split("T")[0]
   );
 
-  const availableDatesAndTimes: { [key: string]: string[] } = {
-    "2025-06-01": [
-      "08:00",
-      "09:00",
-      "10:00",
-      "11:00",
-      "14:00",
-      "15:00",
-      "16:00",
-      "17:00",
-    ],
-    "2025-06-02": [
-      "08:00",
-      "09:00",
-      "10:00",
-      "11:00",
-      "14:00",
-      "15:00",
-      "16:00",
-      "17:00",
-    ],
-    "2025-06-03": [
-      "08:00",
-      "09:00",
-      "10:00",
-      "11:00",
-      "14:00",
-      "15:00",
-      "16:00",
-      "17:00",
-    ],
-    "2025-06-04": [
-      "08:00",
-      "09:00",
-      "10:00",
-      "11:00",
-      "14:00",
-      "15:00",
-      "16:00",
-      "17:00",
-    ],
-    "2025-06-05": [
-      "08:00",
-      "09:00",
-      "10:00",
-      "11:00",
-      "14:00",
-      "15:00",
-      "16:00",
-      "17:00",
-    ],
-  };
+  const { selectedDoctor: doctor } = useDoctor();
 
-  const availableDates = Object.keys(availableDatesAndTimes);
-
-  const doctor = {
-    id: 4,
-    userId: 4,
-    specialty: "Neurologista",
-    crm: "345678",
-    name: "Dra. Ana Costa",
-    email: "draana@email.com",
-    photo: "https://api.dicebear.com/9.x/personas/svg?seed=Wyatt",
-    birthDate: "1988-11-30",
-  };
-
-  const handleSubmit = () => {
-    if (!selectedDate || !selectedTime) {
+  const handleSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!selectedDate) {
       alert("Por favor, selecione uma data e um horário.");
       return;
     }
 
-    console.log(
-      `Consulta agendada com ${doctor.name} no dia ${selectedDate.format(
+    alert(
+      `Consulta agendada com ${doctor?.name} no dia ${selectedDate.format(
         "DD/MM/YYYY"
-      )} às ${selectedTime.format("HH:mm")}.`
+      )} às ${selectedDate.format("HH:mm")}.`
     );
   };
 
@@ -98,77 +71,56 @@ const ScheduleAppointmentPage: React.FC = () => {
     <div className='flex justify-center min-h-screen p-4 pb-20 gap-16 md:items-center md:p-20'>
       <main className='flex flex-col gap-2 md:row-start-2 items-start md:w-3/4 w-full'>
         <CardSection
-          title={doctor.name}
+          title={doctor?.name || "Médico"}
           sections={[
-            { title: "CRM", content: doctor.crm },
-            { title: "Especialidade", content: doctor.specialty },
-            { title: "Email", content: doctor.email },
+            { title: "CRM", content: doctor?.crm || "Não informado" },
+            {
+              title: "Especialidade",
+              content: doctor?.specialty || "Não informado",
+            },
+            { title: "Email", content: doctor?.email || "Não informado" },
           ]}
           isCollapsable
         />
 
         <form
           className='flex flex-col w-full p-4 bg-white rounded-lg md:p-8 gap-8'
-          action={handleSubmit}
+          onSubmit={handleSubmit}
         >
           <p className='text-xl font-bold'>Agendar Consulta</p>
-          <fieldset className='flex flex-col md:flex-row items-end justify-between'>
-            <div className='flex flex-col w-full md:w-auto'>
-              <label htmlFor='date-picker-button' className='text-lg font-bold'>
-                Data da Consulta
-              </label>
-              <DatePicker
-                value={selectedDate}
-                onChange={(newValue) => {
-                  const formattedDate = newValue?.format("YYYY-MM-DD");
-                  if (formattedDate && availableDatesAndTimes[formattedDate]) {
-                    setAvailableTimes(availableDatesAndTimes[formattedDate]);
-                  } else {
-                    setAvailableTimes([]);
-                  }
-
-                  setSelectedDate(newValue);
-                }}
-                shouldDisableDate={(day) =>
-                  !availableDates.includes(day.format("YYYY-MM-DD"))
+          <div className='flex flex-col w-full md:w-auto'>
+            <label htmlFor='date-picker-button' className='text-lg font-bold'>
+              Data da Consulta
+            </label>
+            <DateTimePicker
+              value={selectedDate}
+              onChange={(newValue) => setSelectedDate(newValue)}
+              shouldDisableDate={(day) =>
+                !availableDates.includes(day.format("YYYY-MM-DD"))
+              }
+              shouldDisableTime={(time, view) => {
+                if (view === "hours") {
+                  return !availableDatesAndTimes.some(
+                    (dates) =>
+                      dates.startTime === time.format("YYYY-MM-DDTHH:mm:ss")
+                  );
                 }
-                slotProps={{
-                  openPickerButton: {
-                    id: "date-picker-button",
-                  },
-                }}
-                format='DD/MM/YYYY'
-                disablePast
-                showDaysOutsideCurrentMonth
-              />
-            </div>
+                return false;
+              }}
+              slotProps={{
+                openPickerButton: {
+                  id: "date-picker-button",
+                },
+              }}
+              format='DD/MM/YYYY - HH:mm'
+              views={["year", "month", "day", "hours"]}
+              disablePast
+              ampmInClock={false}
+              ampm={false}
+              showDaysOutsideCurrentMonth
+            />
+          </div>
 
-            <div className='flex flex-col w-full md:w-auto'>
-              <label htmlFor='time-picker-button' className='text-lg font-bold'>
-                Horário da Consulta
-              </label>
-              <TimePicker
-                value={selectedTime}
-                onChange={(newValue) => setSelectedTime(newValue)}
-                shouldDisableTime={(time, view) => {
-                  if (view === "hours") {
-                    return !availableTimes.includes(time.format("HH:mm"));
-                  }
-                  return false;
-                }}
-                slotProps={{
-                  openPickerButton: {
-                    id: "time-picker-button",
-                  },
-                }}
-                views={["hours"]}
-                format='HH:mm'
-                ampmInClock={false}
-                ampm={false}
-                disablePast
-              />
-            </div>
-          </fieldset>
           <Button type='submit' className='w-full m-0 md:w-auto'>
             Agendar
           </Button>
