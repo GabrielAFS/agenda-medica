@@ -1,105 +1,17 @@
 import Card from "../components/card";
+import { useAuth } from "../hooks/useAuth";
 import { IAppointment } from "../types/appointments";
 
 import React from "react";
 import { DatePicker } from "@mui/x-date-pickers";
 import dayjs, { Dayjs } from "dayjs";
-
-const dummyAppointments: IAppointment[] = [
-  {
-    id: 1,
-    pacient: {
-      id: 1,
-      userId: 2,
-      name: "Lucas Silva",
-      email: "lucasilva@email.com",
-      photo: "https://api.dicebear.com/9.x/personas/svg?seed=Christian",
-      birthDate: "1990-01-01",
-    },
-    doctor: {
-      id: 1,
-      userId: 1,
-      specialty: "Cardiologista",
-      crm: "123456",
-      name: "Dr. João Silva",
-      email: "drjoao@email.com",
-      photo: "https://api.dicebear.com/9.x/personas/svg?seed=Alexander",
-      birthDate: "1980-01-01",
-    },
-    startTime: "2025-06-01T10:00:00Z",
-  },
-  {
-    id: 2,
-    pacient: {
-      id: 2,
-      userId: 3,
-      name: "Luana Silva",
-      email: "luanailva@email.com",
-      photo: "https://api.dicebear.com/9.x/personas/svg?seed=Caleb",
-      birthDate: "1990-01-01",
-    },
-    doctor: {
-      id: 1,
-      userId: 1,
-      specialty: "Cardiologista",
-      crm: "123456",
-      name: "Dr. João Silva",
-      email: "drjoao@email.com",
-      photo: "https://api.dicebear.com/9.x/personas/svg?seed=Alexander",
-      birthDate: "1980-01-01",
-    },
-    startTime: "2025-06-01T11:00:00Z",
-  },
-  {
-    id: 3,
-    pacient: {
-      id: 3,
-      userId: 4,
-      name: "Ana Lucia Lima",
-      email: "analucia@email.com",
-      photo: "https://api.dicebear.com/9.x/personas/svg?seed=Jessica",
-      birthDate: "1975-06-15",
-    },
-    doctor: {
-      id: 1,
-      userId: 1,
-      specialty: "Cardiologista",
-      crm: "123456",
-      name: "Dr. João Silva",
-      email: "drjoao@email.com",
-      photo: "https://api.dicebear.com/9.x/personas/svg?seed=Alexander",
-      birthDate: "1980-01-01",
-    },
-    startTime: "2025-06-02T11:00:00Z",
-  },
-  {
-    id: 4,
-    pacient: {
-      id: 4,
-      userId: 5,
-      name: "Fernando Costa",
-      email: "fernandocosta@email.com",
-      photo: "https://api.dicebear.com/9.x/personas/svg?seed=Brooklynn",
-      birthDate: "1995-10-25",
-    },
-    doctor: {
-      id: 1,
-      userId: 1,
-      specialty: "Cardiologista",
-      crm: "123456",
-      name: "Dr. João Silva",
-      email: "drjoao@email.com",
-      photo: "https://api.dicebear.com/9.x/personas/svg?seed=Alexander",
-      birthDate: "1980-01-01",
-    },
-    startTime: "2025-06-02T14:00:00Z",
-  },
-];
+import { useAppointments } from "../hooks/useAppointments";
 
 const AppointmentsPage: React.FC = () => {
+  const { appointments } = useAppointments();
   const [selectedDate, setSelectedDate] = React.useState<Dayjs | null>(dayjs());
 
-  const filteredAppointments = dummyAppointments.filter((appointment) =>
+  const filteredAppointments = appointments.filter((appointment) =>
     dayjs(appointment.startTime).isSame(selectedDate, "day")
   );
 
