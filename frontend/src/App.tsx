@@ -7,6 +7,7 @@ import Home from "./pages/home";
 import DoctorsPage from "./pages/doctors";
 import AppointmentsPage from "./pages/appointments";
 import ScheduleAppointmentPage from "./pages/scheduleAppointment";
+import PacientAppointmentsPage from "./pages/pacientAppointments";
 
 import { AuthProvider } from "./hooks/useAuth";
 import { ProtectedRoute } from "./components/routes/protected";
@@ -45,10 +46,18 @@ function App() {
                   }
                 />
                 <Route
-                  path='/marcar-consulta'
+                  path='/marcar-consulta' // TODO: Change to /medicos/:id/agendar-consulta
                   element={
                     <ProtectedRoute>
                       <ScheduleAppointmentPage />
+                    </ProtectedRoute>
+                  }
+                />
+                <Route
+                  path='/minhas-consultas'
+                  element={
+                    <ProtectedRoute>
+                      <PacientAppointmentsPage />
                     </ProtectedRoute>
                   }
                 />
