@@ -23,7 +23,7 @@ public class DatabaseContext(DbContextOptions<DatabaseContext> options) : DbCont
                 Name = "Dr. Drauzio Varella",
                 Email = "drauzio.varella@email.com",
                 Password = hashedPassword,
-                Photo = "https://example.com/photo.jpg",
+                Photo = "https://api.dicebear.com/9.x/personas/svg?seed=Brooklynn",
                 BirthDate = new DateOnly(1943, 4, 2),
                 Role = "Doctor"
             },
@@ -33,7 +33,7 @@ public class DatabaseContext(DbContextOptions<DatabaseContext> options) : DbCont
                 Name = "Ana Maria Braga",
                 Email = "anamaria@email.com",
                 Password = hashedPassword,
-                Photo = "https://example.com/photo.jpg",
+                Photo = "https://api.dicebear.com/9.x/personas/svg?seed=Sara",
                 BirthDate = new DateOnly(1949, 4, 2),
                 Role = "Pacient"
             },
@@ -43,7 +43,7 @@ public class DatabaseContext(DbContextOptions<DatabaseContext> options) : DbCont
                 Name = "Luciano Huck",
                 Email = "luciano.huck@email.com",
                 Password = hashedPassword,
-                Photo = "https://example.com/photo.jpg",
+                Photo = "https://api.dicebear.com/9.x/personas/svg?seed=Easton",
                 BirthDate = new DateOnly(1971, 9, 3),
                 Role = "Pacient"
             },
@@ -53,7 +53,7 @@ public class DatabaseContext(DbContextOptions<DatabaseContext> options) : DbCont
                 Name = "Marcia Goldschmidt",
                 Email = "marcia.gold@email.com",
                 Password = hashedPassword,
-                Photo = "https://example.com/photo.jpg",
+                Photo = "https://api.dicebear.com/9.x/personas/svg?seed=Sadie",
                 BirthDate = new DateOnly(1960, 3, 2),
                 Role = "Doctor"
             }
