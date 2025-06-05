@@ -2,6 +2,7 @@ import Button from "./button";
 import { IDoctor } from "../types/users";
 import { IAppointment } from "../types/appointments";
 import { dateFormat } from "../utils/dateFormat";
+import { useAuth } from "../hooks/useAuth";
 
 interface Props {
   data: IDoctor | IAppointment;
@@ -9,20 +10,29 @@ interface Props {
 }
 
 const Card: React.FC<Props> = ({ data, onButtonClick }) => {
+  const { user } = useAuth();
+
+  const isUserPacient = user && !("crm" in user);
   const isDoctor = data.hasOwnProperty("crm");
   const title = isDoctor
     ? (data as IDoctor).name
+    : isUserPacient
+    ? (data as IAppointment).doctor.name
     : (data as IAppointment).pacient.name;
 
   const renderDescription = () => {
-    if (isDoctor) {
+    if (isDoctor || (isUserPacient && !isDoctor)) {
+      const doctor = isDoctor
+        ? (data as IDoctor)
+        : (data as IAppointment).doctor;
+
       return (
         <div className='flex justify-center gap-6 text-sm italic text-gray-500'>
           <span>
-            <b>CRM:</b> {(data as IDoctor).crm}
+            <b>CRM:</b> {doctor.crm}
           </span>
           <span>
-            <b>Área:</b> {(data as IDoctor).specialty}
+            <b>Área:</b> {doctor.specialty}
           </span>
         </div>
       );
@@ -46,6 +56,8 @@ const Card: React.FC<Props> = ({ data, onButtonClick }) => {
           src={`${
             isDoctor
               ? (data as IDoctor).photo
+              : isUserPacient
+              ? (data as IAppointment).doctor.photo
               : (data as IAppointment).pacient.photo
           }`}
           alt={`${title}`}
