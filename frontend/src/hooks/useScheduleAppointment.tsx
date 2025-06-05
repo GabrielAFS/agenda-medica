@@ -35,23 +35,27 @@ export const ScheduleAppointmentProvider = ({
   const [token] = useLocalStorage("token", null);
   const { user } = useAuth();
   const { selectedDoctor } = useDoctor();
+
   const [appointmentTimes, setAppointmentTimes] = useState<IAppointmentTime[]>(
     []
   );
   const [loading, setLoading] = useState<boolean>(false);
 
   const fetchAppointmentTimes = useCallback(async () => {
-    // Logic to fetch appointment times for a specific doctor
-    const doctorId = user && "crm" in user ? user.id : selectedDoctor?.id;
-    const response = await api.get("/appointment-times", {
-      params: { doctorId },
-      headers: {
-        Authorization: `Bearer ${token}`,
-      },
-    });
-    const data: IAppointmentTime[] = response.data;
+    try {
+      const doctorId = user && "crm" in user ? user.id : selectedDoctor?.id;
+      const response = await api.get("/appointment-times", {
+        params: { doctorId },
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+      const data: IAppointmentTime[] = response.data;
 
-    setAppointmentTimes(data);
+      setAppointmentTimes(data);
+    } catch (error) {
+      console.log("Failed to fetch appointment times:", error);
+    }
   }, [selectedDoctor, user, token]);
 
   const scheduleAppointment = async (appointmentTimeId: number) => {

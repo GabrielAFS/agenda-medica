@@ -39,7 +39,7 @@ export const DoctorProvider = ({ children }: { children: ReactNode }) => {
 
       setDoctors(data);
     } catch (error) {
-      console.error("Failed to fetch doctors:", error);
+      console.log("Failed to fetch doctors:", error);
     }
   }, [token]);
 

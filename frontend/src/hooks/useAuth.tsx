@@ -51,7 +51,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
 
       return isDoctor;
     } catch (error) {
-      console.error("Failed to fetch user data:", error);
+      console.log("Failed to fetch user data:", error);
       clearHttpToken();
     }
   }, [setUser, clearHttpToken]);
