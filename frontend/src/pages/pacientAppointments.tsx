@@ -1,13 +1,16 @@
 import Card from "../components/card";
-import { useAuth } from "../hooks/useAuth";
 import { IAppointment } from "../types/appointments";
 import { useAppointments } from "../hooks/useAppointments";
 
-import React from "react";
+import React, { useEffect } from "react";
 import dayjs from "dayjs";
 
 const PacientAppointmentsPage: React.FC = () => {
-  const { appointments } = useAppointments();
+  const { appointments, fetchAppointments } = useAppointments();
+
+  useEffect(() => {
+    fetchAppointments();
+  }, []);
 
   const finishedAppointments = appointments.filter(
     (appointment: IAppointment) =>

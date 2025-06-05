@@ -14,6 +14,7 @@ import { useLocalStorage } from "./useLocalStorage";
 
 interface IAppointmentContextData {
   appointments: IAppointment[];
+  fetchAppointments: () => Promise<void>;
 }
 
 const AppointmentContext = createContext<IAppointmentContextData>(
@@ -35,7 +36,7 @@ export const AppointmentProvider = ({ children }: { children: ReactNode }) => {
 
       setAppointments(data);
     } catch (error) {
-      console.error("Error fetching appointments:", error);
+      console.log("Error fetching appointments:", error);
     }
   }, []);
 
@@ -43,7 +44,10 @@ export const AppointmentProvider = ({ children }: { children: ReactNode }) => {
     fetchAppointments();
   }, [fetchAppointments]);
 
-  const value = useMemo(() => ({ appointments }), [appointments]);
+  const value = useMemo(
+    () => ({ appointments, fetchAppointments }),
+    [appointments]
+  );
 
   return (
     <AppointmentContext.Provider value={value}>
