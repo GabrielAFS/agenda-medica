@@ -1,87 +1,67 @@
 @AgendaMedicaAPI_HostAddress = http://localhost:5132
+@token = <adicione_o_token_aqui>
 
-GET {{AgendaMedicaAPI_HostAddress}}/users/
-Accept: application/json
-
-###
 GET {{AgendaMedicaAPI_HostAddress}}/pacients/
+Authorization: Bearer {{token}}
 Accept: application/json
 
 ###
 GET {{AgendaMedicaAPI_HostAddress}}/doctors/
+Authorization: Bearer {{token}}
 Accept: application/json
 
 ###
 GET {{AgendaMedicaAPI_HostAddress}}/appointment-times/
+Authorization: Bearer {{token}}
 Accept: application/json
 
 ###
-GET {{AgendaMedicaAPI_HostAddress}}/users/1
+GET {{AgendaMedicaAPI_HostAddress}}/appointments/
+Authorization: Bearer {{token}}
 Accept: application/json
+
+###
+GET {{AgendaMedicaAPI_HostAddress}}/users/me
+Accept: application/json
+Authorization: Bearer {{token}}
 
 ###
 GET {{AgendaMedicaAPI_HostAddress}}/pacients/1
 Accept: application/json
+Authorization: Bearer {{token}}
 
 ###
 GET {{AgendaMedicaAPI_HostAddress}}/doctors/1
 Accept: application/json
 
 ###
-POST {{AgendaMedicaAPI_HostAddress}}/users
+POST {{AgendaMedicaAPI_HostAddress}}/users/login
 Content-Type: application/json
 
 {
-  "name": "Fulana",
-  "email": "fulana@email.com",
-  "password": "12345678",
-  "photo": "https://photos.com/myphoto.png",
-  "birthDate": "1990-01-01"
-}
-
-###
-POST {{AgendaMedicaAPI_HostAddress}}/pacients
-Content-Type: application/json
-
-{
-  "name": "Fulano",
-  "email": "fulano@email.com",
-  "password": "12345678",
-  "photo": "https://photos.com/myphoto.png",
-  "birthDate": "1990-01-01"
+  "email": "luciano.huck@email.com",
+  "password": "12345678"
 }
 
 ###
 POST {{AgendaMedicaAPI_HostAddress}}/appointment-times/
+Authorization: Bearer {{token}}
 Content-Type: application/json
 
 {
-  "startTime": "2025-05-26T13:00:00Z",
-  "doctorId": 2
+  "startTime": "2025-06-09T09:00:00Z",
+  "doctorId": 1
 }
 
 ###
-PUT {{AgendaMedicaAPI_HostAddress}}/users/1
+POST {{AgendaMedicaAPI_HostAddress}}/appointments/
+Authorization: Bearer {{token}}
 Content-Type: application/json
 
 {
-  "name": "Sicrano",
-  "email": "sicrano@email.com",
-  "password": "12345678",
-  "birthDate": "1990-01-01",
-  "photo": "https://photos.com/myphoto.png"
+  "pacientId": 2,
+  "appointmentTimeId": 9
 }
 
 ###
-POST {{AgendaMedicaAPI_HostAddress}}/appointment-times/
-Content-Type: application/json
-
-{
-  "startTime": "2025-05-26T13:00:00Z",
-  "doctorId": 2
-}
-###
-DELETE {{AgendaMedicaAPI_HostAddress}}/users/1
-
-###
-DELETE {{AgendaMedicaAPI_HostAddress}}/appointment-times/1
+DELETE {{AgendaMedicaAPI_HostAddress}}/appointment-times/9
