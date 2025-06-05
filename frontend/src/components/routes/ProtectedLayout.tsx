@@ -48,8 +48,9 @@ const ProtectedLayout: React.FC<{ children: React.ReactNode }> = ({
       <aside className='w-56 min-h-screen bg-gray-100 p-6 flex flex-col gap-4 border-r border-gray-200'>
         <div className='font-extrabold text-2xl mb-8'>Agenda Médica</div>
         <>
-          {links.map(({ to, icon, title }) => (
+          {links.map(({ to, icon, title }, index) => (
             <Link
+              key={index.toString()}
               to={to}
               className={`text-lg rounded px-2 py-2 transition-colors ${
                 location.pathname.startsWith(to)
