@@ -82,3 +82,15 @@ Aplicativo para agendamento de consultas médicas
 - Página com os detalhes da consulta
 - Testes automatizados
 - Deploy automatizado
+
+## Padrões de commits
+
+O repositório utiliza o seguinte padrão de commits (baseado no [Conventional Commits](https://www.conventionalcommits.org/en/v1.0.0/)):
+
+```sh
+<tipo>(<scopo>): <mensagem>
+```
+
+- o **tipo** pode ser `feat`, `fix`, `chore`, `docs`, `refactor`, `test`, etc...;
+- o **scopo** é opcional, mas, se existir, deve referenciar alguma tarefa, alguma feature ou até mesmo se é backend ou frontend (como utilizei em meus commits); e
+- a **mensagem** deve sempre começar com um verbo no imperativo e relatar com clareza as mudanças realizadas.
