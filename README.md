@@ -39,7 +39,13 @@ Aplicativo para agendamento de consultas médicas
   dotnet ef migrations add NOME_DA_MIGRATION -o .\Database\Migrations\
   ```
 
-**PS.:** Todas a migrations devem ser rodadas assim que o comando `dotnet run` rodar.
+**PS.:** Todas a migrations irão ser aplicadas assim que o comando `dotnet run` rodar.
+
+- Ao mesmo tempo que as migrations rodarem, o banco de dados também será populado com os usuários. Com eles, você poderá fazer login na plataforma e testar a aplicação. Todos eles usam a mesma senha `12345678` e têm os seguintes emails:
+  - drauzio.varella@email.com: tem o `Role=Doctor`;
+  - marcia.gold@email.com: tem o `Role=Doctor`;
+  - anamaria@email.com: tem o `Role=Pacient`;
+  - luciano.huck@email.com: tem o `Role=Pacient`;
 
 ### Frontend
 
@@ -66,13 +72,13 @@ Aplicativo para agendamento de consultas médicas
 - Agenda do médico (criação e exclusão de horários)
 - Marcação de consultas por pacientes
 - Visualização de consultas agendadas
+- Layout responsivo
+- Documentação da API
 
 ### Faltando
 
-- Layout responsivo
 - Cadastro de usuários
-- Recuperação de senhaggaf
+- Recuperação de senha
 - Página com os detalhes da consulta
 - Testes automatizados
 - Deploy automatizado
-- Documentação da API
